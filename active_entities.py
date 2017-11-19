@@ -4,10 +4,10 @@ import datetime
 #  active_entities 
 #
 #  Author : Chip Cox
-#  Date : 18AUG2017
+#  Date : 19NOV2017
 #
 #  Release History
-#  CC     18AUG2017      V0.1     Initial Release
+#  CC     19Nov2017      V0.1     Initial Release
 #
 #  Description:
 #    This application populates a HA group with active entities or entities that are in an on state
@@ -25,16 +25,24 @@ import datetime
 #  active_entities:
 #    class: active_entities
 #    module: active_entities
-#    active_group: group.active_entities
+#    active_group: group.active_entities      # for example
 #    exclusion_types: ['zwave']
 #    interval: 120
-#    on_demand: input_boolean.demand_active_update
+#    on_demand: input_boolean.demand_active_update  # for example
+#    off_states: ['off', 0, 'closed']
 #
 #  active_group - Required - group created in groups.yaml file to hold activeed entities
 #  exclusion_types: - Optional - default ['group','zone'] - type entities not to include in view.  
 #  interval: Optional - default 120 seconds - seconds between updates
-#  on_demand: Optional - no default - input_boolean that can be toggled to force an update. 
-#                                     I recommend not putting this entity an any groups so it is always on this page. 
+#  on_demand: Optional - no default - real input_boolean that can be toggled to force an update. 
+#                                     I recommend not putting this entity into the active_group. 
+#  off_states: Optional but suggested - states that are equivalent to "off".  Most devices have 
+#                                     an "off" like state.  Where some devices use "on" other values
+#                                     as in the case of a dimmer to indicate they are on.  This 
+#                                     allows us to use "away" to indicate off, or "closed" for example.
+#                                     because lights use numbers to indicate how bright they are, and 
+#                                     fans use high/med/low, to indicate on states, checking for off
+#                                     is easier than including all possible on values.
 #
 #################################             
 class active_entities(appapi.AppDaemon):
